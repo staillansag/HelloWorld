@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: msr-dce
+  name: msr-dce
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  minReadySeconds: 0
+  selector:
+    matchLabels:
+      app: msr-dce
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+      labels:
+        app: msr-dce
+    spec:
+      containers:
+        - image: staillansag/msr-dce:0.0.1
+          imagePullPolicy: Always
+          name: msr
+          ports:
+            - name: metrics
+              containerPort: 5555
+          volumeMounts:
+            - mountPath: "/tmp/license"
+              name: licenses
+              readOnly: true
+          env:
+            - name: DATASOURCE_CLASS
+              value: org.postgresql.ds.PGSimpleDataSource
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: environment-secrets
+                  key: databaseUser
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: environment-secrets
+                  key: databasePassword
+            - name: DB_SERVERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: environment-config
+                  key: databaseServerName
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: environment-config
+                  key: databaseServerPort
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: environment-config
+                  key: databaseName
+            - name: JNDI_ALIAS_PROVIDERURL
+              valueFrom:
+                configMapKeyRef:
+                  name: environment-config
+                  key: jndiAliasProviderUrl
+          resources:
+            requests:
+              cpu: 300m
+              memory: 500Mi
+            limits:
+              cpu: 500m
+              memory: 1000Mi
+          livenessProbe:
+            tcpSocket:
+              port: 5555
+            initialDelaySeconds: 180
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 5555
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 24
+      volumes:
+        - name: licenses
+          secret:
+            secretName: licenses
+
+
