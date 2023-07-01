@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Values version="2.0">
+  <record name="record" javaclass="com.wm.util.Values">
+    <value name="node_type">record</value>
+    <value name="node_subtype">unknown</value>
+    <value name="node_nsName">HelloWorld.api.HelloWorldRAD_.docTypes:Error</value>
+    <value name="node_pkg">HelloWorld</value>
+    <value name="is_public">false</value>
+    <value name="field_name">Error</value>
+    <value name="field_type">record</value>
+    <value name="field_dim">0</value>
+    <null name="field_opt"/>
+    <value name="originURI">file:///Users/stephanetailland/Library/CloudStorage/OneDrive-SoftwareAG/projets/EDF/HelloWorld.yaml</value>
+    <null name="wrapper_type"/>
+    <value name="nillable">true</value>
+    <null name="field_xmlns"/>
+    <value name="form_qualified">false</value>
+    <value name="is_global">false</value>
+    <array name="rec_fields" type="record" depth="1">
+      <record javaclass="com.wm.util.Values">
+        <value name="node_type">field</value>
+        <value name="node_subtype">unknown</value>
+        <value name="is_public">false</value>
+        <value name="field_name">error</value>
+        <value name="field_type">string</value>
+        <value name="field_dim">0</value>
+        <null name="field_opt"/>
+        <null name="wrapper_type"/>
+        <value name="nillable">true</value>
+        <null name="field_xmlns"/>
+        <value name="form_qualified">false</value>
+        <value name="is_global">false</value>
+      </record>
+    </array>
+    <null name="rec_closed"/>
+    <null name="rec_sync_des"/>
+    <null name="schemaRegistered"/>
+    <value name="originURI">file:///Users/stephanetailland/Library/CloudStorage/OneDrive-SoftwareAG/projets/EDF/HelloWorld.yaml</value>
+    <value name="modifiable">false</value>
+    <null name="schemaCompliant"/>
+    <null name="elementWrapper"/>
+    <null name="wrappedElement"/>
+    <value name="LOCK_REQUIRED">false</value>
+  </record>
+</Values>
