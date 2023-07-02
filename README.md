@@ -64,7 +64,38 @@ TODO:
 
 ## Installation de l'environnement de développement
 
-TODO
+Il existe plusieurs manières d'installer un environnement de développement pour ce microservice.
+J'utilise ici un conteneur construit à partir de l'image de base du microservice (que j'appelle "Image de développement" ci-dessous.)
+Il nous faut donc:
+-   si vous développez sous Linux, créer le user sagadmin sur la machine hôte
+-   cloner le repository Github sur le filesystem local
+-   créer un conteneur à partir de l'image de développement, en montant plusieurs volumes pour injecter le package du microservice et sa configuration dans le conteneur
+-   brancher le conteneur au Service Designer
+
+### Creation du user sagadmin sur la machine hôte
+
+A l'intérieur du conteneur, le MSR est installé dans un filesystem appartenant au user sagadmin (id 1724.)
+```
+groupadd -g 1724 sagadmin
+useradd sagadmin -u 1724 -g 1724 -m -s /bin/bash
+```
+
+### Clonage du repository Github
+
+### Création du conteneur
+
+```
+docker run --name msrdce \
+	--network sag\
+	-d -p 15555:5555 \
+	-v ./licence/msr-license.xml:/opt/softwareag/IntegrationServer/config/licenseKey.xml:ro \
+	-v ./application.properties:/opt/softwareag/IntegrationServer/application.properties \
+	-v .:/opt/softwareag/IntegrationServer/packages/HelloWorld \
+	-v ./jms/jndi_DEFAULT_IS_JNDI_PROVIDER.properties:/opt/softwareag/IntegrationServer/config/jndi/jndi_DEFAULT_IS_JNDI_PROVIDER.properties \
+	-v ./jms/jms.cnf:/opt/softwareag/IntegrationServer/config/jms.cnf \
+	--env-file=.env \
+	staillansag/webmethods-microservicesruntime:10.15-dce-driver
+```
 
 ## Build de l'image Docker
 ![Structure de l'image Docker](resources/documentation/images/StructureImage.png)
