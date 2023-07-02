@@ -4,6 +4,7 @@ metadata:
   labels:
     app: msr-dce
   name: msr-dce
+  namespace: dce
 spec:
   replicas: 1
   strategy:
@@ -34,6 +35,8 @@ spec:
               name: licenses
               readOnly: true
           env:
+            - name: SAG_IS_LICENSE_FILE
+              value: /tmp/license/msr-license
             - name: DATASOURCE_CLASS
               value: org.postgresql.ds.PGSimpleDataSource
             - name: DB_USER
@@ -66,6 +69,31 @@ spec:
                 configMapKeyRef:
                   name: environment-config
                   key: jndiAliasProviderUrl
+            - name: WM_DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: environment-config
+                  key: wmDatabaseUrl
+            - name: WM_DB_DRIVER_ALIAS
+              valueFrom:
+                configMapKeyRef:
+                  name: environment-config
+                  key: wmDriverAlias
+            - name: WM_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: environment-secrets
+                  key: wmDatabaseUser
+            - name: WM_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: environment-secrets
+                  key: wmDatabasePassword
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: environment-secrets
+                  key: wmAdminPassword
           resources:
             requests:
               cpu: 300m
