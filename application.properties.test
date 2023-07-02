@@ -1,0 +1,6 @@
+globalvariable.SERVER_LOCATION.value=$env{SERVER_LOCATION}
+
+settings.watt.net.default.accept=application/json
+settings.watt.server.ns.lockingMode=none
+
+user.Administrator.password=$env{ADMIN_PASSWORD}

@@ -24,7 +24,7 @@ spec:
         app: msr-dce
     spec:
       containers:
-        - image: staillansag/msr-dce:0.0.1
+        - image: staillansag/msr-dce:0.0.2
           imagePullPolicy: Always
           name: msr
           ports:
@@ -35,8 +35,14 @@ spec:
               name: licenses
               readOnly: true
           env:
+            - name: SERVER_LOCATION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: SAG_IS_LICENSE_FILE
               value: /tmp/license/msr-license
+            - name: SAG_IS_CONFIG_PROPERTIES
+              value: /opt/softwareag/IntegrationServer/application.properties.test
             - name: DATASOURCE_CLASS
               value: org.postgresql.ds.PGSimpleDataSource
             - name: DB_USER

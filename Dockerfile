@@ -12,6 +12,7 @@ USER sagadmin
 
 ADD --chown=sagadmin . /opt/softwareag/IntegrationServer/packages/HelloWorld
 ADD --chown=sagadmin application.properties /opt/softwareag/IntegrationServer/application.properties
+ADD --chown=sagadmin application.properties.test /opt/softwareag/IntegrationServer/application.properties.test
 ADD --chown=sagadmin jms/jndi_DEFAULT_IS_JNDI_PROVIDER.properties /opt/softwareag/IntegrationServer/config/jndi/jndi_DEFAULT_IS_JNDI_PROVIDER.properties
 ADD --chown=sagadmin jms/jms.cnf /opt/softwareag/IntegrationServer/config/jms.cnf
 
