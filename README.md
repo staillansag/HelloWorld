@@ -67,35 +67,46 @@ TODO:
 Il existe plusieurs manières d'installer un environnement de développement pour ce microservice.
 J'utilise ici un conteneur construit à partir de l'image de base du microservice (que j'appelle "Image de développement" ci-dessous.)
 Il nous faut donc:
--   si vous développez sous Linux, créer le user sagadmin sur la machine hôte
 -   cloner le repository Github sur le filesystem local
 -   créer un conteneur à partir de l'image de développement, en montant plusieurs volumes pour injecter le package du microservice et sa configuration dans le conteneur
 -   brancher le conteneur au Service Designer
 
-### Creation du user sagadmin sur la machine hôte
-
-A l'intérieur du conteneur, le MSR est installé dans un filesystem appartenant au user sagadmin (id 1724.)
-```
-groupadd -g 1724 sagadmin
-useradd sagadmin -u 1724 -g 1724 -m -s /bin/bash
-```
-
 ### Clonage du repository Github
+
+```
+git clone https://github.com/staillansag/HelloWorld.git
+```
 
 ### Création du conteneur
 
+Rendez-vous dans le répertoire resources/docker du projet cloné.  
+Créez un fichier .env en partant du fichier .env.example, et alimentez les variables pour pointer vers vos bases de données et serveur Universal Messaging.  
+Ensuite éditez le fichier run.sh, vous devez ajuster les trois variables suivantes dans ce fichier:
+-   MICROSERVICE_HOME: vous devez positionner l'emplacer dans lequel vous avez cloné le repository Github
+-   CONTAINER_NAME: le nom du conteneur qui sera créé (vous pouvez utiliser msrdce si vous voulez)
+-   HOST_PORT: le port de la machine hôte vers lequel le port 5555 du conteneur invité sera mappé
+
+Ensuite vous devrez rendre le script run.sh executable:
 ```
-docker run --name msrdce \
-	--network sag\
-	-d -p 15555:5555 \
-	-v ./licence/msr-license.xml:/opt/softwareag/IntegrationServer/config/licenseKey.xml:ro \
-	-v ./application.properties:/opt/softwareag/IntegrationServer/application.properties \
-	-v .:/opt/softwareag/IntegrationServer/packages/HelloWorld \
-	-v ./jms/jndi_DEFAULT_IS_JNDI_PROVIDER.properties:/opt/softwareag/IntegrationServer/config/jndi/jndi_DEFAULT_IS_JNDI_PROVIDER.properties \
-	-v ./jms/jms.cnf:/opt/softwareag/IntegrationServer/config/jms.cnf \
-	--env-file=.env \
-	staillansag/webmethods-microservicesruntime:10.15-dce-driver
+chmod u+x run.sh
 ```
+Et enfin vous pourrez lancer le conteneur:
+```
+./run.sh
+```
+
+Vous pourrez vérifier le bon fonctionnement en vous connectant à l'adresse http://localhost:$HOST_PORT (où $HOST_PORT est le numéro de port spécifié dans le script run.sh)  
+Si vous avez accès à l'interface d'administration, vérifiez les points suivants:
+-   license configurée pour le MSR
+-   Ressource JNDI DEFAULT_IS_JNDI_PROVIDER
+-   Alias JMS jms_DCE
+-   Adaptateur JDBC HelloWorld_jdbc
+-   JDBC pool wmdb
+-   Utilisation de ce JDBC pool pour les fonctions ISCoreAudit et ISInternal
+
+### Connection Service Designer - Conteneur
+
+Dernière étape, il faut à présent ajouter le MSR du conteneur dans le Service Designer. Ca se fait comme pour n'importe quel IS ou MSR, il faut simplement pointer vers l'URL http://localhost:$HOST_PORT
 
 ## Build de l'image Docker
 ![Structure de l'image Docker](resources/documentation/images/StructureImage.png)
