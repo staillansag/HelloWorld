@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: msr-hello-world
+  name: msr-hello-world
+  namespace: dce
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  minReadySeconds: 0
+  selector:
+    matchLabels:
+      app: msr-hello-world
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+      labels:
+        app: msr-hello-world
+    spec:
+      containers:
+        - image: staillansag/msr-hello-world:latest
+          imagePullPolicy: Always
+          name: msr
+          ports:
+            - name: metrics
+              containerPort: 5555
+          volumeMounts:
+            - mountPath: "/tmp/license"
+              name: licenses
+              readOnly: true
+          env:
+            - name: SERVER_LOCATION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: SAG_IS_LICENSE_FILE
+              value: /tmp/license/msr-license
+            - name: SAG_IS_CONFIG_PROPERTIES
+              value: /opt/softwareag/IntegrationServer/application.properties.test
+          livenessProbe:
+            tcpSocket:
+              port: 5555
+            initialDelaySeconds: 180
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 5555
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 24
+      volumes:
+        - name: licenses
+          secret:
+            secretName: licenses
+
+

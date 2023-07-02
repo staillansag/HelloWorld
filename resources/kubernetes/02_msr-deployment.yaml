@@ -2,8 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: msr-dce
-  name: msr-dce
+    app: msr-hello-world
+  name: msr-hello-world
   namespace: dce
 spec:
   replicas: 1
@@ -15,16 +15,16 @@ spec:
   minReadySeconds: 0
   selector:
     matchLabels:
-      app: msr-dce
+      app: msr-hello-world
   template:
     metadata:
       annotations:
         prometheus.io/scrape: "true"
       labels:
-        app: msr-dce
+        app: msr-hello-world
     spec:
       containers:
-        - image: staillansag/msr-dce:0.0.2
+        - image: staillansag/msr-hello-world:latest
           imagePullPolicy: Always
           name: msr
           ports:
@@ -48,12 +48,12 @@ spec:
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: environment-secrets
+                  name: environment-secret
                   key: databaseUser
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: environment-secrets
+                  name: environment-secret
                   key: databasePassword
             - name: DB_SERVERNAME
               valueFrom:
@@ -88,17 +88,17 @@ spec:
             - name: WM_DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: environment-secrets
+                  name: environment-secret
                   key: wmDatabaseUser
             - name: WM_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: environment-secrets
+                  name: environment-secret
                   key: wmDatabasePassword
             - name: ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: environment-secrets
+                  name: environment-secret
                   key: wmAdminPassword
           resources:
             requests:
