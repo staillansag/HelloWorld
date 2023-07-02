@@ -95,6 +95,7 @@ Et enfin vous pourrez lancer le conteneur:
 ./run.sh
 ```
 
+Le démarrage du MSR prend une à deux minutes.  
 Vous pourrez vérifier le bon fonctionnement en vous connectant à l'adresse http://localhost:$HOST_PORT (où $HOST_PORT est le numéro de port spécifié dans le script run.sh)  
 Si vous avez accès à l'interface d'administration, vérifiez les points suivants:
 -   license configurée pour le MSR
