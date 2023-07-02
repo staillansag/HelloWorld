@@ -1,13 +1,66 @@
 # microservice webMethods Hello World
 
 Ce repository montre l'utilisation du Microservice Runtime Software AG pour mettre en place un microservice Hello World.
+Deux configurations et deux modes de déploiement sont fournis:
+-   configuration et déploiement simplifiés, sans dépendance externe à gérer
+-   configuration standard, avec branchement aux ressources externes (et donc nécessité de configurer ces ressources externes)
 
 ## Architecture logique
 ![Architecture logique](resources/documentation/images/ArchitectureLogique.png)
 
 ## Gestion des dépendances
 
-TODO
+### Base de données webMethods
+
+Cette base de données doit être configurée avec les schémas ISCoreAudit et ISInternal. On pourra utiliser l'outil Database Configurator pour ce faire.
+
+Ce microservice s'appuie sur une base Postgres, mais grace au driver JDBC DataDirect Connect on peut utiliser d'autres solutions équivalentes (ou supérieures.)
+
+Quatre variables d'environnement permettent de se connecter à cette base de données:
+-   WM_DB_URL: URL JDBC de connexion à la base
+-   WM_DB_USER: user pour se connecter à la base
+-   WM_DB_PASSWORD: mot de passe pour se connecter à la base
+-   WM_DB_DRIVER_ALIAS: alias du driver JDBC pour se connecter à la base
+
+TODO: 
+-   fournir une image du Database Configurator 
+-   gérer l'initialisation des schémas avec un job Kubernetes
+
+### Base de données du microservice
+
+Le microservice se connecte à une base Postgres nommée sandbox, qui doit comporter une table helloworldmessages. Voici le DDL pour créer cette table:
+```
+CREATE TABLE public.hellomessages (
+	id varchar(50) NOT NULL,
+	creationdatetime timestamp NOT NULL,
+	message varchar(255) NOT NULL
+);
+```
+
+Voici les variables d'environnement à configurer pour se connecter à cette base:
+-   DB_SERVERNAME: nom ou IP de la machine hébergeant la base
+-   DB_PORT: port de communication de la base
+-   DB_NAME: nom de la base
+-   DB_USER: user pour se connecter à la base
+-   DB_PASSWORD: mot de passe pour se connecter à la base
+-   DATASOURCE_CLASS: classe du driver JDBC
+
+### Universal Messaging
+
+Le microservice utilise un realm Universal Messaging externe pour la communication orientée message.  
+Il embarque deux fichiers de configuration:
+-   jndi_DEFAULT_IS_JNDI_PROVIDER.properties qui définit le fournisseur JNDI pour se connecter au realm UM
+-   jms.cnf qui définit l'alias de connection au realm UM nommé dce_JMS, lequel pointe vers une connection factory XA nommée um_cf_xa_nhps
+
+La connection au realm se fait par le biais de la variable d'environnement JNDI_ALIAS_PROVIDERURL
+
+Au sein du realm deux ressources doivent être définies:
+-   la connection factory XA nommée um_cf_xa_nhps
+-   le topic nommé HelloWorldTopic
+
+TODO:
+-   Déployer l'UM au sein du cluster Kubernetes (par le biais d'un StatefulSet)
+-   Gérer la création des ressources de l'UM par le biais d'un job Kubernetes
 
 ## Installation de l'environnement de développement
 
@@ -58,7 +111,7 @@ Pour tester le déploiement dans Kubernetes, un mode spécifique a été mis en 
 Il suffit de faire pointer la variable SAG_IS_CONFIG_PROPERTIES vers le fichier properties /opt/softwareag/IntegrationServer/application.properties.test, dans le manifeste 02_msr-deployment.yaml  
 Cette configuration désactive en particulier l'utilisation des bases de données externes.  Il n'est donc pas nécessaire de charger les fichiers de configuration 01_ms-ConfigMap.yaml et 01_ms-Secret.yaml  
 
-Pour effectuer ce déploiement simplifié, il faut d'abord se positionner dans resources/kubernetes  
+Pour effectuer ce déploiement simplifié, il faut d'abord se positionner dans resources/kubernetes-test  
 
 Créez le fichier 01_license-Secret.yaml en copiant 01_license-Secret.yaml.example  
 Convertissez ensuite le contenu du fichier XML de license du Microservice Runtime en base64, par exemple en utilisant cette commande (où msr-license.xml est donc le nom du fichier XML de licence):
@@ -117,6 +170,66 @@ La réponse renvoyée doit être celle-ci:
 {"message":"Hello toto, great to have you here!"}
 ```
 
-### Debugging du déploiement Kubernetes
+### Déploiement standard
 
 TODO
+
+### Debugging du déploiement Kubernetes
+
+#### Statut du pod différent de "Running"
+
+Utiliser la commande suivante pour investiguer (en remplaçant podName par le nom de pod renvoyé par la commande get pods):
+```
+kubectl describe pod podName -n dce
+```
+
+#### Erreur au niveau de l'appel d'API
+
+Il peut y avoir plusieurs explications.
+
+Commencez par vérifier les logs du microservice runtime avec cette commande (en remplaçant podName par le nom de pod renvoyé par la commande get pods):
+```
+kubectl logs podName -n dce
+```
+Il s'agit du contenu du fichier server.log, qui permet de savoir si le serveur est bien démarré.
+
+Si le serveur MSR est bien démarré, le problème est peut-être au niveau du service. La commande suivante permet d'analyser ce service:
+```
+kubectl describe svc msr-hello-world -n dce
+```
+Voici le contenu attendu (les adresses IP seront différentes):
+```
+Name:                     msr-hello-world
+Namespace:                dce
+Labels:                   name=msr-hello-world
+Annotations:              <none>
+Selector:                 app=msr-hello-world
+Type:                     LoadBalancer
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.0.74.154
+IPs:                      10.0.74.154
+LoadBalancer Ingress:     20.126.68.228
+Port:                     <unset>  80/TCP
+TargetPort:               5555/TCP
+NodePort:                 <unset>  31260/TCP
+Endpoints:                10.244.0.32:5555
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:
+  Type    Reason                Age   From                Message
+  ----    ------                ----  ----                -------
+  Normal  EnsuringLoadBalancer  27m   service-controller  Ensuring load balancer
+  Normal  EnsuredLoadBalancer   26m   service-controller  Ensured load balancer
+```
+Il faut vérifier la ligne "Endpoints", qui doit pointer vers une ou plusieurs IP de pods (en fonction du nombre de réplicas configuré) et sur le port 5555.
+
+Une autre manière d'investiguer le problème est d'utiliser le port-forward, qui permet de créer un tunnel entre un pod et votre station de travail (en remplaçant podName par le nom de pod renvoyé par la commande get pods):
+```
+kubectl port-forward podName 8888:5555 -n dce
+```
+A partir de là, on peut essayer d'appeler l'API en pointant vers localhost:8888:
+```
+curl --location --request GET 'http://localhost:8888/helloworld/greetings?name=toto' --header 'accept: application/json'  --header 'Authorization: Basic QWRtaW5pc3RyYXRvcjptYW5hZ2U='
+```
+Dans le cas où cet appel renvoie la réponse attendue, alors le pod fonctionne correctement et problème est très certainement au niveau du service.
