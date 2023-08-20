@@ -117,6 +117,7 @@ Dernière étape, il faut à présent ajouter le MSR du conteneur dans le Servic
 L'image staillansag/webmethods-microservicesruntime:10.15-dce a été construite en utilisant les outils Software AG.
 Voir le repository https://github.com/staillansag/sag-unattended-installations qui est un fork du repository officiel SAG.
 J'ai créé un nouveau template pour intégrer les packages webMethods nécessaires: WmMonitor, WmJDBCAdapter, WmHDFSAdapter, WmCloudStreams.
+Tout est expliqué ici: https://github.com/staillansag/sag-unattended-installations/tree/main/05.docker-image-builders/MSR/1015/msr-dce-custom-builder
 
 TODO: automatiser le build de cette image de base par le biais d'un pipeline de CI/CD.
 
