@@ -4,7 +4,6 @@ metadata:
   labels:
     app: msr-hello-world
   name: msr-hello-world
-  namespace: dce
 spec:
   replicas: 1
   strategy:
