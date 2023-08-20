@@ -1,4 +1,4 @@
-FROM staillansag/webmethods-microservicesruntime:10.15-dce-driver 
+FROM staillansag/webmethods-microservicesruntime:10.15-dce-driver
 
 EXPOSE 5555
 EXPOSE 5543
