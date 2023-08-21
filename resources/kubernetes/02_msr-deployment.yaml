@@ -41,7 +41,7 @@ spec:
             - name: SAG_IS_LICENSE_FILE
               value: /tmp/license/msr-license
             - name: SAG_IS_CONFIG_PROPERTIES
-              value: /opt/softwareag/IntegrationServer/application.properties.test
+              value: /opt/softwareag/IntegrationServer/application.properties
             - name: DATASOURCE_CLASS
               value: org.postgresql.ds.PGSimpleDataSource
             - name: DB_USER

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: umserver
+  labels:
+    app: msr-hello-world
+spec:
+  serviceName: umserver-h
+  selector:
+    matchLabels:
+      name: umserver-pod
+      app: msr-hello-world
+  replicas: 1
+  template:
+    metadata:
+      name: umserver-pod
+      labels:
+        name: umserver-pod
+        app: msr-hello-world 
+    spec:
+      containers:
+      -  name: umserver-container
+         image: sagcr.azurecr.io/universalmessaging-server:10.15
+         volumeMounts:
+         -  mountPath: /opt/softwareag/UniversalMessaging/server/umserver/licence
+            name: licenses
+         ports:
+         -  containerPort: 9000
+         env:
+         - name: REALM_NAME
+           valueFrom:
+             fieldRef:
+               fieldPath: metadata.name 
+      imagePullSecrets:
+      - name: sagregcred
+      volumes:
+      - name: licenses
+        secret:
+          secretName: licenses
+          items:
+          - key: um-license
+            path: licence.xml
