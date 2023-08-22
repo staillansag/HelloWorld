@@ -3,7 +3,7 @@
 <Values version="2.0">
   <value name="node_type">webMethods/trigger</value>
   <value name="node_subtype">unknown</value>
-  <value name="node_nsName">HelloWorld.jms:HelloWorldJMSTrigger</value>
+  <value name="node_nsName">HelloWorld.jms:HelloWorldS3Trigger</value>
   <value name="node_pkg">HelloWorld</value>
   <value name="node_comment"></value>
   <value name="is_public">false</value>
@@ -26,7 +26,7 @@
     <value name="inDoubtDetection">false</value>
     <value name="resolveWithHistory">false</value>
     <value name="resolutionHistoryTTL">7200000</value>
-    <value name="uniqueId">9tyG/cpRwxmbkS/l0+F28wYANmo=</value>
+    <value name="uniqueId">hejbgkCjdRzsXwWCq4zzJD307Lg=</value>
     <value name="executeUser">Administrator</value>
     <value name="aliasName">dce_JMS</value>
     <number name="jmsTriggerType" type="Integer">0</number>
@@ -43,7 +43,7 @@
     <array name="routingRules" type="record" depth="1">
       <record javaclass="com.wm.util.Values">
         <value name="ruleName">Rule1</value>
-        <value name="serviceName">HelloWorld.service:ManageHelloWorldMessage</value>
+        <value name="serviceName">HelloWorld.service:ManageS3</value>
         <value name="filter"></value>
       </record>
     </array>
