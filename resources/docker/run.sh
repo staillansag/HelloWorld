@@ -10,5 +10,6 @@ docker run --name $CONTAINER_NAME \
 	-v $MICROSERVICE_HOME:/opt/softwareag/IntegrationServer/packages/HelloWorld \
 	-v $MICROSERVICE_HOME/jms/jndi_DEFAULT_IS_JNDI_PROVIDER.properties:/opt/softwareag/IntegrationServer/config/jndi/jndi_DEFAULT_IS_JNDI_PROVIDER.properties \
 	-v $MICROSERVICE_HOME/jms/jms.cnf:/opt/softwareag/IntegrationServer/config/jms.cnf \
+	-v $MICROSERVICE_HOME/resources/docker/keystores/msr.truststore.jks:/opt/softwareag/common/conf/keystores/msr.truststore.jks:ro \
 	--env-file=.env \
 	staillansag/webmethods-microservicesruntime:10.15-dce-driver

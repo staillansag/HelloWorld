@@ -33,72 +33,14 @@ spec:
             - mountPath: "/tmp/license"
               name: licenses
               readOnly: true
-          env:
-            - name: SERVER_LOCATION
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: SAG_IS_LICENSE_FILE
-              value: /tmp/license/msr-license
-            - name: SAG_IS_CONFIG_PROPERTIES
-              value: /opt/softwareag/IntegrationServer/application.properties
-            - name: DATASOURCE_CLASS
-              value: org.postgresql.ds.PGSimpleDataSource
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: environment-secret
-                  key: databaseUser
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: environment-secret
-                  key: databasePassword
-            - name: DB_SERVERNAME
-              valueFrom:
-                configMapKeyRef:
-                  name: environment-config
-                  key: databaseServerName
-            - name: DB_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: environment-config
-                  key: databaseServerPort
-            - name: DB_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: environment-config
-                  key: databaseName
-            - name: JNDI_ALIAS_PROVIDERURL
-              valueFrom:
-                configMapKeyRef:
-                  name: environment-config
-                  key: jndiAliasProviderUrl
-            - name: WM_DB_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: environment-config
-                  key: wmDatabaseUrl
-            - name: WM_DB_DRIVER_ALIAS
-              valueFrom:
-                configMapKeyRef:
-                  name: environment-config
-                  key: wmDriverAlias
-            - name: WM_DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: environment-secret
-                  key: wmDatabaseUser
-            - name: WM_DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: environment-secret
-                  key: wmDatabasePassword
-            - name: ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: environment-secret
-                  key: wmAdminPassword
+            - mountPath: "/opt/softwareag/common/conf/keystores"
+              name: keystores
+              readOnly: true
+          envFrom:
+          - configMapRef:
+              name: environment-config
+          - secretRef:
+              name: environment-secret
           resources:
             requests:
               cpu: 300m
@@ -121,5 +63,9 @@ spec:
         - name: licenses
           secret:
             secretName: licenses
-
-
+        - name: keystores
+          secret:
+            secretName: keystores
+            items:
+            - key: msr-truststore
+              path: msr.truststore.jks

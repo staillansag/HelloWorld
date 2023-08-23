@@ -24,6 +24,10 @@ spec:
          volumeMounts:
          -  mountPath: /opt/softwareag/UniversalMessaging/server/umserver/licence
             name: licenses
+         -  mountPath: /opt/softwareag/UniversalMessaging/server/umserver/data
+            name: um-data-directory
+         -  mountPath: /opt/softwareag/common/conf
+            name: um-conf-directory
          ports:
          -  containerPort: 9000
          env:
@@ -40,3 +44,22 @@ spec:
           items:
           - key: um-license
             path: licence.xml
+  volumeClaimTemplates:
+    - metadata:
+        name: um-data-directory
+      spec:
+        accessModes: 
+          - ReadWriteOnce
+        storageClassName: gp2
+        resources:
+          requests:
+            storage: 1Gi
+    - metadata:
+        name: um-conf-directory
+      spec:
+        accessModes: 
+          - ReadWriteOnce
+        storageClassName: gp2
+        resources:
+          requests:
+            storage: 1Gi

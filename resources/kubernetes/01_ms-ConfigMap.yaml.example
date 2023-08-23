@@ -3,9 +3,29 @@ kind: ConfigMap
 metadata:
   name: environment-config
 data:
-  databaseServerName: "microservice database server"
-  databaseServerPort: "microservice database port"
-  databaseName: "microservice database name"
-  jndiAliasProviderUrl: "JNDI provider URL for JMS connectivity"
-  wmDatabaseUrl: "webMethods database JDBC URL"
-  wmDriverAlias: "webMethods database driver alias"
+  SAG_IS_LICENSE_FILE: /tmp/license/msr-license
+  SAG_IS_CONFIG_PROPERTIES: /opt/softwareag/IntegrationServer/application.properties
+  DATASOURCE_CLASS: org.postgresql.ds.PGSimpleDataSource
+  WM_DB_URL: 
+  WM_DB_USER: 
+  WM_DB_DRIVER_ALIAS: DataDirect Connect JDBC PostgreSQL Driver
+  DB_NAME: 
+  DB_USER: 
+  DB_PORT: 5432
+  DB_SERVERNAME: 
+  SFTPSERVER_SFTP_HOSTNAME: 
+  SFTPSERVER_SFTP_PORT: 22
+  SFTPSERVER_SFTP_HOSTKEY: 
+  SFTP_USER_NAME: 
+  S3_ACCESS_KEY: 
+  SMTP_SERVERNAME: 
+  SMTP_PORT: 587
+  SMTP_AUTH_TYPE: Basic
+  SMTP_AUTH_USERNAME: 
+  SMTP_TLS_MODE: explicit
+  SMTP_TRUSTSTORE_ALIAS: msr_truststore
+  SMTP_SEND_FROM: 
+  SMTP_SEND_TO: 
+  MSR_TRUSTSTORE_LOCATION: /opt/softwareag/common/conf/keystores/msr.truststore.jks
+  JNDI_ALIAS_PROVIDERURL: 
+  MSR_URL: 
