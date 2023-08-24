@@ -1,0 +1,18 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: msr-hello-world-build
+spec:
+  source:
+    type: Git
+    git:
+      uri: "https://github.com/staillansag/HelloWorld.git"
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile  
+      forcePull: true
+  output:
+    to:
+      kind: ImageStreamTag
+      name: msr-hello-world:latest

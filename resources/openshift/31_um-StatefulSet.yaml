@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: umserver
+  labels:
+    app: msr-hello-world
+spec:
+  serviceName: umserver-h
+  selector:
+    matchLabels:
+      name: umserver-pod
+      app: msr-hello-world
+  replicas: 1
+  template:
+    metadata:
+      name: umserver-pod
+      labels:
+        name: umserver-pod
+        app: msr-hello-world 
+    spec:
+      containers:
+      -  name: umserver-container
+         image: image-registry.openshift-image-registry.svc:5000/staillansag-dev/universal-messaging:10.15
+         volumeMounts:
+         -  mountPath: /opt/softwareag/UniversalMessaging/server/umserver/licence
+            name: licenses
+         -  mountPath: /opt/softwareag/UniversalMessaging/server/umserver/data
+            name: um-data-directory
+         -  mountPath: /opt/softwareag/common/conf
+            name: um-conf-directory
+         ports:
+         -  containerPort: 9000
+         env:
+         - name: REALM_NAME
+           valueFrom:
+             fieldRef:
+               fieldPath: metadata.name 
+      volumes:
+      - name: licenses
+        secret:
+          secretName: licenses
+          items:
+          - key: um-license
+            path: licence.xml
+  volumeClaimTemplates:
+    - metadata:
+        name: um-data-directory
+      spec:
+        accessModes: 
+          - ReadWriteOnce
+        storageClassName: gp2
+        resources:
+          requests:
+            storage: 1Gi
+    - metadata:
+        name: um-conf-directory
+      spec:
+        accessModes: 
+          - ReadWriteOnce
+        storageClassName: gp2
+        resources:
+          requests:
+            storage: 1Gi

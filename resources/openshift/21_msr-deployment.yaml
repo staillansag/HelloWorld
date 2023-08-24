@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: msr-hello-world
+  name: msr-hello-world
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  minReadySeconds: 0
+  selector:
+    matchLabels:
+      app: msr-hello-world
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+      labels:
+        app: msr-hello-world
+    spec:
+      containers:
+        - image: image-registry.openshift-image-registry.svc:5000/staillansag-dev/msr-hello-world:latest
+          imagePullPolicy: Always
+          name: msr
+          ports:
+            - name: metrics
+              containerPort: 5555
+          volumeMounts:
+            - mountPath: "/tmp/license"
+              name: licenses
+              readOnly: true
+            - mountPath: "/opt/softwareag/common/conf/keystores"
+              name: keystores
+              readOnly: true
+          envFrom:
+          - configMapRef:
+              name: environment-config
+          - secretRef:
+              name: environment-secret
+          resources:
+            requests:
+              cpu: 300m
+              memory: 500Mi
+            limits:
+              cpu: 500m
+              memory: 1000Mi
+          livenessProbe:
+            tcpSocket:
+              port: 5555
+            initialDelaySeconds: 180
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 5555
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 24
+      volumes:
+        - name: licenses
+          secret:
+            secretName: licenses
+        - name: keystores
+          secret:
+            secretName: keystores
+            items:
+            - key: msr-truststore
+              path: msr.truststore.jks

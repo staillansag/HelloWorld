@@ -1,0 +1,17 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: universal-messaging
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - from:
+      kind: DockerImage
+      name: sagcr.azurecr.io/universalmessaging-server:10.15
+    importPolicy:
+      insecure: false
+      scheduled: true
+    name: "10.15"
+    referencePolicy:
+      type: Source
