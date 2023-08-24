@@ -16,3 +16,6 @@ ADD --chown=sagadmin application.properties.test /opt/softwareag/IntegrationServ
 ADD --chown=sagadmin jms/jndi_DEFAULT_IS_JNDI_PROVIDER.properties /opt/softwareag/IntegrationServer/config/jndi/jndi_DEFAULT_IS_JNDI_PROVIDER.properties
 ADD --chown=sagadmin jms/jms.cnf /opt/softwareag/IntegrationServer/config/jms.cnf
 
+RUN chmod -R g=u /opt/softwareag/IntegrationServer/packages/HelloWorld
+RUN chmod g=u /opt/softwareag/IntegrationServer/config/jms.cnf
+RUN chmod g=u /opt/softwareag/IntegrationServer/config/jndi/jndi_DEFAULT_IS_JNDI_PROVIDER.properties
