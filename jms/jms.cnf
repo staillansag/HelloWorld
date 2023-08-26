@@ -122,7 +122,7 @@
         <value name="um_producerIncludedStrings"></value>
         <value name="um_consumerIncludedStrings"></value>
         <value name="providerName">Universal Messaging</value>
-        <value name="providerVersion">10.15.0 Build 10.15.0.0.496 August 31 2022</value>
+        <value name="providerVersion">10.15.0 Build 10.15.0.11.643 August 1 2023</value>
         <number name="providerMajorVersion" type="java.lang.Integer">10</number>
         <number name="providerMinorVersion" type="java.lang.Integer">15</number>
       </record>
