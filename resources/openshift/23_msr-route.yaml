@@ -1,0 +1,17 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: msr-hello-world
+  labels:
+    name: msr-hello-world
+  annotations:
+    openshift.io/host.generated: 'true'
+spec:
+  host: msr-hello-world-staillansag-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+  to:
+    kind: Service
+    name: msr-hello-world
+    weight: 100
+  port:
+    targetPort: 80
+
