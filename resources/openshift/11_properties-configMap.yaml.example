@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: msr-hello-world 
+data:
+  application.properties: |
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbc.connectionEnabled=<Valeur>
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbc.connectionSettings.databaseName=<Valeur>
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbc.connectionSettings.datasourceClass=<Valeur>
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbc.connectionSettings.portNumber=<Valeur>
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbc.connectionSettings.serverName=<Valeur>
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbc.connectionSettings.user=<Valeur>
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbc.connectionSettings.password=$secret{DB_PASSWORD}
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbc.connectionManagerSettings.maximumPoolSize=<Valeur>
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbc.connectionSettings.transactionType=<Valeur>
+
+    jndi.DEFAULT_IS_JNDI_PROVIDER.providerURL=<Valeur>
+
+    sftpserver.sftp.hostName=<Valeur>
+    sftpserver.sftp.port=<Valeur>
+    sftpserver.sftp.hostKey=<Valeur>
+    sftpserver.sftp.preferredKeyExchangeAlgorithm=curve25519-sha256@libssh.org,diffie-hellman-group18-sha512,diffie-hellman-group17-sha512,diffie-hellman-group16-sha512,diffie-hellman-group15-sha512,diffie-hellman-group14-sha256,diffie-hellman-group-exchange-sha256,rsa2048-sha256,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,rsa1024-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group1-sha1,curve25519-sha256
+    sftpserver.sftp.preferredMACS2C=hmac-sha2-512-96,hmac-sha2-512,hmac-sha2-256-etm@openssh.com,hmac-sha2-256,hmac-sha2-256-96,hmac-sha1-etm@openssh.com,hmac-sha1,hmac-sha1-96,hmac-md5,hmac-md5-etm@openssh.com,hmac-md5-96,hmac-sha2-512-etm@openssh.com
+    sftpserver.sftp.preferredMACC2S=hmac-sha2-512-96,hmac-sha2-512,hmac-sha2-256-etm@openssh.com,hmac-sha2-256,hmac-sha2-256-96,hmac-sha1-etm@openssh.com,hmac-sha1,hmac-sha1-96,hmac-md5,hmac-md5-etm@openssh.com,hmac-md5-96,hmac-sha2-512-etm@openssh.com
+    sftpserver.sftp.preferredCiphersS2C=aes128-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr,arcfour256,aes256-cbc,3des-cbc,3des-ctr,aes192-cbc,aes128-cbc,blowfish-cbc,arcfour128,arcfour,aes256-gcm@openssh.com
+    sftpserver.sftp.preferredCiphersC2S=aes128-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr,arcfour256,aes256-cbc,3des-cbc,3des-ctr,aes192-cbc,aes128-cbc,blowfish-cbc,arcfour128,arcfour,aes256-gcm@openssh.com
+    sftpuser.sftp_user.sftpServerAlias=<Valeur>
+    sftpuser.sftp_user.userName=<Valeur>
+    sftpuser.sftp_user.password=$secret{SFTP_USER_PASSWORD}
+
+    globalvariable.SMTP_SERVERNAME.value=<Valeur>
+    globalvariable.SMTP_PORT.value=<Valeur>
+    globalvariable.SMTP_AUTH_TYPE.value=<Valeur>
+    globalvariable.SMTP_AUTH_USERNAME.value=<Valeur>
+    globalvariable.SMTP_AUTH_PASSWORD.value=$secret{SMTP_AUTH_PASSWORD}
+    globalvariable.SMTP_TLS_MODE.value=<Valeur>
+    globalvariable.SMTP_TRUSTSTORE_ALIAS.value=<Valeur>
+    globalvariable.SMTP_SEND_FROM.value=<Valeur>
+    globalvariable.SMTP_SEND_TO.value=<Valeur>
+
+    truststore.msr_truststore.ksLocation=<Valeur>
+    truststore.msr_truststore.ksPassword=$secret{MSR_TRUSTSTORE_PASSWORD}
+
+    cloudstreamsconnection.HelloWorld.HelloWorld..aws\:pocsag.connectionconfiguration.aws..accessKey=<Valeur>
+    cloudstreamsconnection.HelloWorld.HelloWorld..aws\:pocsag.connectionconfiguration.aws..secretKey=$secret{S3_SECRET_KEY}
+
+    jdbc.wmdb.dbURL=<Valeur>
+    jdbc.wmdb.userid=<Valeur>
+    jdbc.wmdb.password=$secret{WM_DB_PASSWORD}
+    jdbc.wmdb.driverAlias=<Valeur>
+    jdbcfunc.ISCoreAudit.connPoolAlias=wmdb
+    jdbcfunc.ISInternal.connPoolAlias=wmdb
+    jdbcfunc.ProcessAudit.connPoolAlias=wmdb
+
+    settings.watt.net.default.accept=application/json
+    settings.watt.server.ns.lockingMode=none
+    settings.watt.net.localhost=<Valeur>
+
+    user.Administrator.password=$secret{ADMIN_PASSWORD}
+
+  applicationFile.properties: | # Fichier de propriétés supplémentaires, si nécessaire
