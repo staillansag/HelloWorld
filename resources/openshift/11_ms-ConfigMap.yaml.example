@@ -6,6 +6,8 @@ data:
   SAG_IS_LICENSE_FILE: /tmp/license/msr-license
   SAG_IS_CONFIG_PROPERTIES: /opt/softwareag/IntegrationServer/application.properties
   DATASOURCE_CLASS: org.postgresql.ds.PGSimpleDataSource
+  WM_DB_TYPE: pgsql
+  WM_DB_SCHEMA_LIST: ISInternal,DocumentHistory,CrossReference,ISCoreAudit,DistributedLocking,ProcessAudit
   WM_DB_URL: 
   WM_DB_USER: 
   WM_DB_DRIVER_ALIAS: DataDirect Connect JDBC PostgreSQL Driver

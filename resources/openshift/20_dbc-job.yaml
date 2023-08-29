@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dbc-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: dbc-container
+        image: staillansag/dbc:10.15.0.1
+        command: ["/opt/softwareag/common/db/bin/dbConfigurator.sh"]
+        args: 
+          - "-a"
+          - "create"
+          - "-d"
+          - "${WM_DB_TYPE}"
+          - "-c"
+          - "${WM_DB_SCHEMA_LIST}"
+          - "-v"
+          - "latest"
+          - "-l"
+          - "$(WM_DB_URL)"
+          - "-u"
+          - "$(WM_DB_USER)"
+          - "-p"
+          - "$(WM_DB_PASSWORD)"
+        envFrom:
+        - configMapRef:
+            name: environment-config
+        - secretRef:
+            name: environment-secret
+      restartPolicy: Never
