@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: universalmessaging-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: create-connection-factory
+        image: sagcr.azurecr.io/universalmessaging-tools:10.15
+        command: ["sh", "-c"]
+        args:
+          - >
+            runUMTool.sh CreateConnectionFactory
+            -rname=${JNDI_ALIAS_PROVIDERURL}
+            -factoryname=um_cf_xa_nhps
+            -factorytype=xa
+            -connectionurl=${JNDI_ALIAS_PROVIDERURL}
+        envFrom:
+        - configMapRef:
+            name: environment-config
+
+      - name: create-jms-topic
+        image: sagcr.azurecr.io/universalmessaging-tools:10.15
+        command: ["sh", "-c"]
+        args:
+          - >
+            runUMTool.sh CreateJMSTopic
+            -rname=${JNDI_ALIAS_PROVIDERURL}
+            -channelname=HelloWorldTopic
+        envFrom:
+        - configMapRef:
+            name: environment-config
+
+      restartPolicy: Never
+      imagePullSecrets:
+      - name: sagregcred
