@@ -13,8 +13,7 @@ spec:
           - >
             runUMTool.sh CreateConnectionFactory
             -rname=${JNDI_ALIAS_PROVIDERURL}
-            -factoryname=um_cf_xa_nhps
-            -factorytype=xa
+            -factoryname=local_um
             -connectionurl=${JNDI_ALIAS_PROVIDERURL}
         envFrom:
         - configMapRef:

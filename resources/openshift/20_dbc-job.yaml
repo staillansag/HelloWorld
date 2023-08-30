@@ -24,6 +24,10 @@ spec:
           - "$(WM_DB_USER)"
           - "-p"
           - "$(WM_DB_PASSWORD)"
+          - "-tsdata"
+          - "$(WM_DB_TS_DATA)"
+          - "-tsindex"
+          - "$(WM_DB_TS_INDEX)"
         envFrom:
         - configMapRef:
             name: environment-config
