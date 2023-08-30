@@ -65,7 +65,7 @@ Il nous faut créer la connection factory et le topic JMS.
 Là aussi, on passe par un utilitaire packagé dans une image Docker, et disponible sur containers.softwareag.com
 
 ```
-docker run -it --network dce_sag sagcr.azurecr.io/universalmessaging-tools:10.15 runUMTool.sh CreateConnectionFactory -rname=nsp://umserver:9000 -factoryname=um_cf_xa_nhps -factorytype=xa -connectionurl=nsp://umserver:9000
+docker run -it --network dce_sag sagcr.azurecr.io/universalmessaging-tools:10.15 runUMTool.sh CreateConnectionFactory -rname=nsp://umserver:9000 -factoryname=local_um -connectionurl=nsp://umserver:9000
 docker run -it --network dce_sag sagcr.azurecr.io/universalmessaging-tools:10.15 runUMTool.sh CreateJMSTopic -rname=nsp://umserver:9000 -channelname=HelloWorldTopic
 ```
 
