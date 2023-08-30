@@ -11,6 +11,8 @@ data:
   WM_DB_URL: 
   WM_DB_USER: 
   WM_DB_DRIVER_ALIAS: DataDirect Connect JDBC PostgreSQL Driver
+  WM_DB_TS_DATA: 
+  WM_DB_TS_INDEX: 
   DB_NAME: 
   DB_USER: 
   DB_PORT: 5432
