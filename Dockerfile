@@ -9,7 +9,5 @@ USER sagadmin
 ADD --chown=sagadmin . /opt/softwareag/IntegrationServer/packages/HelloWorld
 ADD --chown=sagadmin application.properties /opt/softwareag/IntegrationServer/application.properties
 ADD --chown=sagadmin application.properties.test /opt/softwareag/IntegrationServer/application.properties.test
-ADD --chown=sagadmin jms/jms.cnf /opt/softwareag/IntegrationServer/config/jms.cnf
 
 RUN chmod -R g=u /opt/softwareag/IntegrationServer/packages/HelloWorld
-RUN chmod g=u /opt/softwareag/IntegrationServer/config/jms.cnf
