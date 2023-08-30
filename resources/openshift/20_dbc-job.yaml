@@ -8,26 +8,19 @@ spec:
       containers:
       - name: dbc-container
         image: staillansag/dbc:10.15.0.1
-        command: ["/opt/softwareag/common/db/bin/dbConfigurator.sh"]
-        args: 
-          - "-a"
-          - "create"
-          - "-d"
-          - "${WM_DB_TYPE}"
-          - "-c"
-          - "${WM_DB_SCHEMA_LIST}"
-          - "-v"
-          - "latest"
-          - "-l"
-          - "$(WM_DB_URL)"
-          - "-u"
-          - "$(WM_DB_USER)"
-          - "-p"
-          - "$(WM_DB_PASSWORD)"
-          - "-tsdata"
-          - "$(WM_DB_TS_DATA)"
-          - "-tsindex"
-          - "$(WM_DB_TS_INDEX)"
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          /opt/softwareag/common/db/bin/dbConfigurator.sh \
+          -a create \
+          -d "${WM_DB_TYPE}" \
+          -c "${WM_DB_SCHEMA_LIST}" \
+          -v latest \
+          -l "${WM_DB_URL}" \
+          -u "${WM_DB_USER}" \
+          -p "${WM_DB_PASSWORD}" \
+          -tsdata "${WM_DB_TS_DATA}" \
+          -tsindex "${WM_DB_TS_INDEX}"
         envFrom:
         - configMapRef:
             name: environment-config
