@@ -28,7 +28,7 @@
     <value name="resolutionHistoryTTL">7200000</value>
     <value name="uniqueId">oQ2v+Wu3PBOXR2OmwT90ESkaiaE=</value>
     <value name="executeUser">Administrator</value>
-    <value name="aliasName">dce_JMS</value>
+    <value name="aliasName">DEFAULT_IS_JMS_CONNECTION</value>
     <number name="jmsTriggerType" type="Integer">0</number>
     <Boolean name="enabled">true</Boolean>
     <value name="prefetchSize">10</value>

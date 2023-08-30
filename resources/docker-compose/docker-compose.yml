@@ -57,9 +57,13 @@ services:
       - ${MSR_LICENSE_PATH}:/opt/softwareag/IntegrationServer/config/licenseKey.xml:ro
       - ${MICROSERVICE_HOME}/application.properties:/opt/softwareag/IntegrationServer/application.properties
       - ${MICROSERVICE_HOME}:/opt/softwareag/IntegrationServer/packages/HelloWorld
-      - ${MICROSERVICE_HOME}/jms/jms.cnf:/opt/softwareag/IntegrationServer/config/jms.cnf
     env_file:
       - .env
+    healthcheck:
+      test: ["CMD", "curl", "localhost:5555"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 networks:
   sag:
