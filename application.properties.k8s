@@ -8,21 +8,7 @@ artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbc.connectionSettings.tran
 artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbc.connectionSettings.user=$env{DB_USER}
 artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbc.connectionManagerSettings.maximumPoolSize=$env{JDBC_POOL_SIZE}
 
-artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionEnabled=false
-artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.datasourceClass=com.wm.dd.jdbcx.oracle.OracleDataSource
-artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.driverType=Default
-artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.portNumber=$env{DB_PORT}
-artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.serverName=$env{DB_SERVERNAME}
-artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.otherProperties=$env{DB_OTHER_PROPERTIES}
-artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.transactionType=LOCAL_TRANSACTION
-artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.user=$env{DB_USER}
-artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.password=$env{DB_PASSWORD}
-
-jndi.DEFAULT_IS_JNDI_PROVIDER.providerURL=nsp://umserver:9000
-jms.DEFAULT_IS_JMS_CONNECTION.clientID=DEFAULT_IS_JMS_CLIENT
-jms.DEFAULT_IS_JMS_CONNECTION.enabled=true
-jms.DEFAULT_IS_JMS_CONNECTION.csqSize=0
-jms.DEFAULT_IS_JMS_CONNECTION.jndi_jndiAliasName=DEFAULT_IS_JNDI_PROVIDER
+jndi.DEFAULT_IS_JNDI_PROVIDER.providerURL=$env{JNDI_ALIAS_PROVIDERURL}
 
 sftpserver.sftp.hostName=$env{SFTPSERVER_SFTP_HOSTNAME}
 sftpserver.sftp.port=$env{SFTPSERVER_SFTP_PORT}
@@ -66,9 +52,3 @@ settings.watt.server.ns.lockingMode=none
 settings.watt.net.localhost=$env{MSR_URL}
 
 user.Administrator.password=$env{ADMIN_PASSWORD}
-
-globalvariable.ORACLE_UP.value=true
-globalvariable.POSTGRES_UP.value=true
-globalvariable.S3_UP.value=true
-globalvariable.SFTP_UP.value=true
-globalvariable.SMTP_UP.value=true

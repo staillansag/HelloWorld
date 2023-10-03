@@ -14,6 +14,16 @@ data:
     artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbc.connectionManagerSettings.maximumPoolSize=<Valeur>
     artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbc.connectionSettings.transactionType=<Valeur>
 
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionEnabled=<Valeur>
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.datasourceClass=com.wm.dd.jdbcx.oracle.OracleDataSource
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.driverType=Default
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.otherProperties=serviceName\=XEPDB1
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.portNumber=1521
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.serverName=localhost
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.transactionType=LOCAL_TRANSACTION
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.user=<Valeur>
+    artConnection.HelloWorld.HelloWorld.jdbc.HelloWorld_jdbcOracle.connectionSettings.password=$secret{DB_PASSWORD}
+
     jndi.DEFAULT_IS_JNDI_PROVIDER.providerURL=<Valeur>
     jms.DEFAULT_IS_JMS_CONNECTION.clientID=DEFAULT_IS_JMS_CLIENT
     jms.DEFAULT_IS_JMS_CONNECTION.enabled=true
@@ -61,5 +71,11 @@ data:
     settings.watt.net.localhost=<Valeur>
 
     user.Administrator.password=$secret{ADMIN_PASSWORD}
+
+    globalvariable.ORACLE_UP.value=true
+    globalvariable.POSTGRES_UP.value=true
+    globalvariable.S3_UP.value=true
+    globalvariable.SFTP_UP.value=true
+    globalvariable.SMTP_UP.value=true
 
   applicationFile.properties: | # Fichier de propriétés supplémentaires, si nécessaire

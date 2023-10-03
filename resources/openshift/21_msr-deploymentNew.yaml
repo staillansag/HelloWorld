@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: msr-hello-world
+  name: msr-hello-world
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  minReadySeconds: 0
+  selector:
+    matchLabels:
+      app: msr-hello-world
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+      labels:
+        app: msr-hello-world
+    spec:
+      containers:
+        - image: image-registry.openshift-image-registry.svc:5000/staillansag-dev/msr-hello-world:latest
+          imagePullPolicy: Always
+          name: msr
+          ports:
+            - containerPort: 5543
+              name: https
+              protocol: TCP
+            - containerPort: 9999
+              name: diag
+              protocol: TCP
+            - containerPort: 5555
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - name: microservicesruntime-license
+              mountPath: /opt/softwareag/IntegrationServer/config/licenseKey.xml
+              subPath:   licenseKey.xml
+              readOnly:  true
+            - name: application-properties
+              mountPath: /opt/softwareag/IntegrationServer/application.properties
+              subPath:   application.properties
+              readOnly:  true
+            - mountPath: "/opt/softwareag/common/conf/keystores"
+              name: keystores
+              readOnly: true
+            - name: secrets
+              mountPath: /etc/secrets
+          resources:
+            requests:
+              cpu: 300m
+              memory: 500Mi
+            limits:
+              cpu: 1000m
+              memory: 1000Mi
+          livenessProbe:
+            tcpSocket:
+              port: 5555
+            failureThreshold: 3
+            initialDelaySeconds: 180
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1  
+          readinessProbe:
+            tcpSocket:
+              port: 5555
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 24
+      volumes:
+        - name: secrets
+          secret:
+            secretName: environment-secret
+        - name: microservicesruntime-license
+          secret:
+            secretName: licenses
+            defaultMode: 0666
+            items:
+            - key:  msr-license
+              path: licenseKey.xml
+        - name: application-properties
+          configMap:
+            name: msr-hello-world
+            items:
+            - key:  application.properties
+              path: application.properties
+        - name: keystores
+          secret:
+            secretName: keystores
+            items:
+            - key: msr-truststore
+              path: msr.truststore.jks
